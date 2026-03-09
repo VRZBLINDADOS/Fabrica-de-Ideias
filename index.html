@@ -251,15 +251,25 @@
                 <div class="space-y-6">
                     <div class="glass p-6 md:p-8 rounded-[2rem] border border-white/5 space-y-6 overflow-hidden">
                         <h2 class="text-xl font-black uppercase italic text-white">Destaques</h2>
+                        <!-- Seção de Destaques atualizada com os arquivos do GitHub -->
                         <div class="carousel-container custom-scrollbar">
-                            <div class="carousel-item rounded-xl border border-white/10 overflow-hidden aspect-[9/16] bg-zinc-900 flex items-center justify-center">
-                                <span class="text-[8px] text-gray-700 uppercase font-black">Vídeo #1 VRZ</span>
+                            <div class="carousel-item rounded-xl border border-white/10 overflow-hidden aspect-[9/16] bg-black">
+                                <video autoplay muted loop playsinline class="w-full h-full object-cover">
+                                    <source src="video1.mp4.mp4" type="video/mp4">
+                                </video>
                             </div>
-                            <div class="carousel-item rounded-xl border border-white/10 overflow-hidden aspect-[9/16] bg-zinc-900 flex items-center justify-center">
-                                <span class="text-[8px] text-gray-700 uppercase font-black">Vídeo #2 VRZ</span>
+                            <div class="carousel-item rounded-xl border border-white/10 overflow-hidden aspect-[9/16] bg-black">
+                                <video autoplay muted loop playsinline class="w-full h-full object-cover">
+                                    <source src="video2.mp4.mp4" type="video/mp4">
+                                </video>
                             </div>
-                            <div class="carousel-item rounded-xl border border-white/10 overflow-hidden aspect-[9/16] bg-zinc-900 flex items-center justify-center">
-                                <span class="text-[8px] text-gray-700 uppercase font-black">Vídeo #3 VRZ</span>
+                            <div class="carousel-item rounded-xl border border-white/10 overflow-hidden aspect-[9/16] bg-black">
+                                <video autoplay muted loop playsinline class="w-full h-full object-cover">
+                                    <source src="video3.mp4.mp4" type="video/mp4">
+                                </video>
+                            </div>
+                            <div class="carousel-item rounded-xl border border-white/10 overflow-hidden aspect-[9/16] bg-black">
+                                <img src="video4.mp3.jpg" class="w-full h-full object-cover" alt="VRZ Destaque #4">
                             </div>
                         </div>
                         <p class="text-[8px] text-gray-600 italic text-center uppercase tracking-widest">Excelência em cada detalhe.</p>
@@ -361,31 +371,60 @@
             modal.style.display = 'flex';
         };
 
-        // Lógica de Login atualizada com Usuário e Senha
         window.loginAdmin = () => {
             if (isAdmin) return;
             
-            const userLogin = prompt("Usuário Administrativo:");
-            if (userLogin === null) return;
+            const modal = document.getElementById('custom-modal');
+            document.getElementById('modal-title').innerText = "Acesso Administrativo";
+            document.getElementById('modal-text').innerHTML = `
+                <div class="space-y-4 text-left">
+                    <div class="space-y-1">
+                        <label class="text-[9px] uppercase font-bold text-gray-500 ml-2">Usuário VRZ</label>
+                        <input type="text" id="adminUser" class="input-field" placeholder="Ex: Nome.Sobrenome">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-[9px] uppercase font-bold text-gray-500 ml-2">Senha de Acesso</label>
+                        <input type="password" id="adminPass" class="input-field" placeholder="••••••••">
+                    </div>
+                </div>
+            `;
             
-            const passLogin = prompt("Senha:");
-            if (passLogin === null) return;
+            const actions = document.getElementById('modal-actions');
+            actions.innerHTML = '';
+            
+            const cancelBtn = document.createElement('button');
+            cancelBtn.className = "bg-gray-800 px-6 py-2 rounded-lg text-xs font-bold uppercase hover:bg-gray-700 transition-colors";
+            cancelBtn.innerText = "Cancelar";
+            cancelBtn.onclick = () => modal.style.display = 'none';
+            
+            const loginBtn = document.createElement('button');
+            loginBtn.className = "bg-red-600 px-6 py-2 rounded-lg text-xs font-bold uppercase hover:bg-red-700 transition-colors";
+            loginBtn.innerText = "Acessar";
+            loginBtn.onclick = () => {
+                const userLogin = document.getElementById('adminUser').value;
+                const passLogin = document.getElementById('adminPass').value;
 
-            const admins = {
-                "Lucas.Sabino": "Vrz2024",
-                "Eduardo.Rocha": "Helito@1313"
+                const admins = {
+                    "Lucas.Sabino": "Vrz2024",
+                    "Eduardo.Rocha": "Helito@1313"
+                };
+
+                if (admins[userLogin] === passLogin) {
+                    isAdmin = true;
+                    document.getElementById('adminIndicator').classList.remove('hidden');
+                    document.getElementById('suggestionsHeader').classList.add('hidden');
+                    document.getElementById('protocolSearchContainer').classList.add('hidden');
+                    document.getElementById('adminStats').classList.remove('hidden');
+                    loadSuggestions();
+                    modal.style.display = 'none';
+                } else {
+                    showModal("Erro", "Credenciais administrativas incorretas.");
+                }
             };
-
-            if (admins[userLogin] === passLogin) {
-                isAdmin = true;
-                document.getElementById('adminIndicator').classList.remove('hidden');
-                document.getElementById('suggestionsHeader').classList.add('hidden');
-                document.getElementById('protocolSearchContainer').classList.add('hidden');
-                document.getElementById('adminStats').classList.remove('hidden');
-                loadSuggestions();
-            } else {
-                showModal("Erro", "Credenciais administrativas incorretas.");
-            }
+            
+            actions.appendChild(cancelBtn);
+            actions.appendChild(loginBtn);
+            modal.style.display = 'flex';
         };
 
         window.logoutAdmin = () => {
