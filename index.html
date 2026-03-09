@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #050505; color: #ffffff; overflow-x: hidden; margin: 0; padding-bottom: 80px; }
-        .glass { background: rgba(15, 15, 15, 0.9); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .glass { background: rgba(15, 15, 15, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); }
         .nav-link { position: relative; transition: all 0.3s ease; opacity: 0.6; cursor: pointer; }
         .nav-link.active { color: #ffffff; opacity: 1; }
         .nav-link.active::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 100%; height: 2px; background: #dc2626; }
@@ -38,11 +38,11 @@
         .mobile-nav { position: fixed; bottom: 0; left: 0; right: 0; display: flex; justify-content: space-around; padding: 15px; background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(10px); border-top: 1px solid rgba(255,255,255,0.05); z-index: 100; }
         @media (min-width: 768px) { .mobile-nav { display: none; } }
 
-        .admin-btn { font-size: 8px; color: #333; transition: color 0.3s; outline: none; cursor: pointer; }
+        .admin-btn { font-size: 10px; color: #555; transition: color 0.3s; outline: none; cursor: pointer; }
         .admin-btn:hover { color: #dc2626; }
         .reply-box { margin-top: 10px; padding: 10px; background: rgba(220, 38, 38, 0.05); border-radius: 8px; border-left: 2px solid #dc2626; }
         
-        #custom-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 10000; align-items: center; justify-content: center; padding: 20px; }
+        #custom-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 10000; align-items: center; justify-content: center; padding: 20px; }
         .modal-content { background: #111; border: 1px solid #dc2626; border-radius: 20px; padding: 30px; width: 100%; max-width: 400px; text-align: center; }
     </style>
 </head>
@@ -58,9 +58,9 @@
     <div id="custom-modal">
         <div class="modal-content">
             <h3 id="modal-title" class="text-xl font-black italic uppercase text-red-600 mb-4">Aviso</h3>
-            <div id="modal-text" class="text-sm text-gray-400 mb-6 italic"></div>
+            <div id="modal-text" class="text-sm text-gray-400 mb-6 italic leading-relaxed"></div>
             <div id="modal-actions" class="flex gap-4 justify-center">
-                <button id="modal-close" class="bg-gray-800 px-6 py-2 rounded-lg text-xs font-bold uppercase">Fechar</button>
+                <button id="modal-close" class="bg-gray-800 px-6 py-2 rounded-lg text-xs font-bold uppercase hover:bg-gray-700">Fechar</button>
             </div>
         </div>
     </div>
@@ -92,8 +92,13 @@
     <main class="max-w-6xl mx-auto p-4 md:p-8">
 
         <section id="page-suggestions" class="page-content active space-y-10">
-            <h1 class="text-4xl font-black italic uppercase text-center">Canal de <span class="text-red-600">Inovação</span></h1>
+            <div class="text-center space-y-2">
+                <h1 class="text-4xl md:text-5xl font-black italic uppercase">Fábrica de <span class="text-red-600">Ideias</span></h1>
+                <p class="text-[10px] text-gray-500 uppercase tracking-[0.3em] font-bold">Ideias que protegem o amanhã</p>
+            </div>
+
             <div class="grid grid-cols-1 md:grid-cols-5 gap-8">
+                <!-- FORMULÁRIO -->
                 <div class="md:col-span-2 glass p-6 rounded-[2rem] space-y-4">
                     <h2 class="text-xl font-black uppercase italic border-b border-white/5 pb-2">Nova Proposta</h2>
                     <form id="feedbackForm" class="space-y-4">
@@ -128,39 +133,40 @@
                         <button type="submit" id="submitBtn" class="w-full bg-red-600 py-4 rounded-xl font-black uppercase italic tracking-tighter hover:bg-red-700 transition-all">Enviar Proposta</button>
                     </form>
                 </div>
+
+                <!-- LISTA E ACOMPANHAMENTO -->
                 <div class="md:col-span-3 space-y-4">
                     <div class="flex flex-col gap-4">
                         <div class="flex items-center justify-between px-2">
                             <button onclick="loginAdmin()" id="suggestionsHeader" class="text-sm font-bold uppercase italic text-gray-500 admin-btn">Área Restrita</button>
-                            <!-- Botão Sair adicionado -->
                             <div id="adminIndicator" class="hidden flex items-center gap-4">
-                                <span class="text-[8px] font-black text-red-600 uppercase tracking-widest">Painel Administrativo VRZ</span>
-                                <button onclick="logoutAdmin()" class="text-[8px] font-black text-white bg-red-600/20 hover:bg-red-600 px-2 py-1 rounded transition-all uppercase">Sair</button>
+                                <span class="text-[8px] font-black text-red-600 uppercase tracking-widest animate-pulse">Painel Administrativo VRZ Ativo</span>
+                                <button onclick="logoutAdmin()" class="text-[8px] font-black text-white bg-red-600/20 hover:bg-red-600 px-2 py-1 rounded transition-all uppercase border border-red-600/30">Sair</button>
                             </div>
                         </div>
                         
                         <div id="protocolSearchContainer" class="px-2">
                             <div class="relative">
-                                <input type="text" id="protocolInput" class="input-field !py-3 !text-[11px] uppercase" placeholder="Digite seu protocolo para acompanhar (Ex: VRZ-XXXX)">
-                                <button id="btnSearchProtocol" class="absolute right-2 top-1/2 -translate-y-1/2 text-[9px] font-black text-red-600 uppercase tracking-widest px-3">Buscar</button>
+                                <input type="text" id="protocolInput" class="input-field !py-3 !text-[11px] uppercase pr-20" placeholder="Acompanhar Protocolo (Ex: VRZ-XXXX)">
+                                <button id="btnSearchProtocol" class="absolute right-2 top-1/2 -translate-y-1/2 text-[9px] font-black text-red-600 uppercase tracking-widest px-3 py-1 hover:bg-red-600/10 rounded-lg transition-all">Buscar</button>
                             </div>
                         </div>
 
-                        <!-- Área de Gráfico e Exportação (Apenas Admin) -->
+                        <!-- ADMIN STATS -->
                         <div id="adminStats" class="hidden px-2 mb-4 space-y-4">
                             <div class="glass p-4 rounded-2xl flex flex-col md:flex-row items-center gap-6">
-                                <div class="w-32 h-32">
+                                <div class="w-24 h-24">
                                     <canvas id="statsChart"></canvas>
                                 </div>
                                 <div class="flex flex-col gap-2">
-                                    <h4 class="text-[10px] font-black uppercase text-gray-500 tracking-widest">Visão Geral</h4>
+                                    <h4 class="text-[10px] font-black uppercase text-gray-500 tracking-widest">Métricas Globais</h4>
                                     <div class="flex items-center gap-2">
                                         <div class="w-2 h-2 rounded-full bg-red-600"></div>
-                                        <span class="text-[11px] font-bold">Aguardando: <span id="countPending">0</span></span>
+                                        <span class="text-[11px] font-bold uppercase">Pendentes: <span id="countPending" class="text-white">0</span></span>
                                     </div>
                                     <div class="flex items-center gap-2">
                                         <div class="w-2 h-2 rounded-full bg-green-600"></div>
-                                        <span class="text-[11px] font-bold">Respondidos: <span id="countAnswered">0</span></span>
+                                        <span class="text-[11px] font-bold uppercase">Respondidos: <span id="countAnswered" class="text-white">0</span></span>
                                     </div>
                                 </div>
                             </div>
@@ -168,47 +174,53 @@
                             <div class="glass p-4 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-4">
                                 <div class="flex flex-col gap-1">
                                     <h4 class="text-[10px] font-black uppercase text-gray-500 tracking-widest">Exportar Relatório</h4>
-                                    <p class="text-[9px] text-gray-400 italic">Gere um PDF detalhado com o status das ideias por mês.</p>
+                                    <p class="text-[9px] text-gray-400 italic">Gere um PDF detalhado das ideias mensais.</p>
                                 </div>
                                 <div class="flex items-center gap-2 w-full md:w-auto">
-                                    <input type="month" id="exportMonth" class="bg-black border border-white/10 rounded-lg px-3 py-2 text-[10px] uppercase font-bold outline-none">
+                                    <input type="month" id="exportMonth" class="bg-black border border-white/10 rounded-lg px-3 py-2 text-[10px] uppercase font-bold outline-none text-white">
                                     <button id="btnExportPDF" class="bg-white/10 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-[9px] font-black uppercase transition-all whitespace-nowrap">Exportar PDF</button>
                                 </div>
                             </div>
                         </div>
 
-                        <div id="suggestionsList" class="space-y-6 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar italic text-xs text-gray-600">
-                            <div class="text-center py-10 opacity-30 italic">Insira seu protocolo acima ou faça login como administrador.</div>
+                        <div id="suggestionsList" class="space-y-6 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
+                            <div class="text-center py-20 opacity-30 italic flex flex-col items-center gap-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                                <span class="text-xs uppercase font-bold tracking-[0.2em]">Insira um protocolo para pesquisar sua ideia.</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
+        <!-- SOBRE -->
         <section id="page-about" class="page-content space-y-12">
             <div class="text-center space-y-4">
                 <h1 class="text-4xl md:text-7xl font-black italic uppercase leading-none">Somos <span class="text-red-600">VRZ</span></h1>
+                <p class="text-gray-500 uppercase tracking-[0.4em] font-bold text-[10px]">Excelência em Blindagem Automotiva Premium</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div class="glass p-6 md:p-8 rounded-3xl border-t border-red-600/30">
                     <div class="icon-box"><svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-width="2" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
                     <h3 class="text-lg font-black uppercase italic mb-3 text-red-600">Missão</h3>
-                    <p class="text-gray-400 text-xs md:text-sm leading-relaxed italic font-light">Oferecer blindagem automotiva de excelência no Brasil, aliando tecnologia, segurança e preservação do design original, superando expectativas e transmitindo valor agregado em cada entrega.</p>
+                    <p class="text-gray-400 text-xs md:text-sm leading-relaxed italic font-light">Oferecer blindagem automotiva de excelência no Brasil, aliando tecnologia, segurança e preservação do design original.</p>
                 </div>
                 <div class="glass p-6 md:p-8 rounded-3xl border-t border-white/10">
                     <div class="icon-box" style="background: #222;"><svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><circle stroke-width="2" cx="12" cy="12" r="10"/><path d="M22 12h-4M2 12h4M12 2v4M12 22v-4"/></svg></div>
                     <h3 class="text-lg font-black uppercase italic mb-3 text-white">Visão</h3>
-                    <p class="text-gray-400 text-xs md:text-sm leading-relaxed italic font-light">Ser reconhecida como a melhor empresa de blindagem automotiva premium do país, pela qualidade, inovação e responsabilidade social e ambiental, atendendo de forma personalizada às necessidades de clientes exigentes.</p>
+                    <p class="text-gray-400 text-xs md:text-sm leading-relaxed italic font-light">Ser reconhecida como a melhor empresa de blindagem automotiva premium do país pela qualidade e inovação.</p>
                 </div>
                 <div class="glass p-6 md:p-8 rounded-3xl border-t border-white/10">
                     <div class="icon-box" style="background: #222;"><svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M20.42 4.58a5.4 5.4 0 0 0-7.65 0l-.77.78-.77-.78a5.4 5.4 0 0 0-7.65 7.65l.77.78L12 20.24l7.23-7.23.77-.78a5.4 5.4 0 0 0 0-7.65z"/></svg></div>
                     <h3 class="text-lg font-black uppercase italic mb-3 text-white">Valores</h3>
-                    <p class="text-gray-300 text-[10px] uppercase font-bold leading-tight mb-4">Como empresa de blindagem automotiva, valorizamos a vida acima de tudo.</p>
                     <div class="space-y-2 text-[10px] text-gray-400 italic">
-                        <p><b class="text-red-500 uppercase not-italic">ÉTICA:</b> Transparência e responsabilidade.</p>
-                        <p><b class="text-red-500 uppercase not-italic">PESSOAS:</b> Valorizar nossa equipe.</p>
-                        <p><b class="text-red-500 uppercase not-italic">INOVAÇÃO:</b> Tecnologias elevadas.</p>
+                        <p><b class="text-red-500 uppercase not-italic">ÉTICA:</b> Transparência absoluta.</p>
+                        <p><b class="text-red-500 uppercase not-italic">PESSOAS:</b> Valorizar cada colaborador.</p>
+                        <p><b class="text-red-500 uppercase not-italic">INOVAÇÃO:</b> Tecnologia de ponta.</p>
                         <p><b class="text-red-500 uppercase not-italic">QUALIDADE:</b> Padrões rigorosos.</p>
                     </div>
                 </div>
@@ -219,8 +231,8 @@
                     <div class="glass p-6 md:p-8 rounded-[2rem] border border-white/5 space-y-4">
                         <h2 class="text-xl md:text-2xl font-black uppercase italic text-red-600">Nossa História</h2>
                         <div class="text-gray-400 text-xs md:text-sm leading-relaxed italic font-light space-y-4">
-                            <p>Fundada sob os pilares da precisão técnica e segurança absoluta, a VRZ Blindados consolidou-se como autoridade máxima em blindagem no Brasil. Nossa trajetória é pautada pelo compromisso inabalável de unir proteção de alto impacto à integridade dinâmica de cada veículo.</p>
-                            <p>Com operação numa planta industrial de alta tecnologia em São Bernardo do Campo. Não apenas reforçamos veículos; blindamos a tranquilidade de famílias e executivos, garantindo que a sofisticação e o prazer de conduzir permaneçam inalterados.</p>
+                            <p>Fundada sob os pilares da precisão técnica e segurança absoluta, a VRZ Blindados consolidou-se como autoridade máxima em blindagem no Brasil.</p>
+                            <p>Com sede industrial em São Bernardo do Campo, garantimos que a sofisticação e o prazer de conduzir permaneçam inalterados após a blindagem.</p>
                         </div>
                     </div>
                     <div class="glass p-6 md:p-8 rounded-[2rem] border border-white/5 space-y-4">
@@ -228,7 +240,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                             Onde Estamos
                         </h2>
-                        <p class="text-gray-400 text-xs italic leading-loose font-mono">R. Oneda, 615 - Planalto<br>São Bernardo do Campo - SP<br>CEP: 09895-280</p>
+                        <p class="text-gray-400 text-xs italic leading-loose font-mono">R. Oneda, 615 - Planalto<br>São Bernardo do Campo - SP</p>
                         <div class="flex gap-4">
                             <a href="https://www.linkedin.com/company/vrz-blindados/" target="_blank" class="bg-blue-600 text-white px-4 py-2 rounded-xl text-[9px] font-black uppercase transition-all hover:scale-105">LinkedIn</a>
                             <a href="https://www.instagram.com/vrzblindados/" target="_blank" class="bg-red-600 text-white px-4 py-2 rounded-xl text-[9px] font-black uppercase transition-all hover:scale-105">Instagram</a>
@@ -239,28 +251,18 @@
                 <div class="space-y-6">
                     <div class="glass p-6 md:p-8 rounded-[2rem] border border-white/5 space-y-6 overflow-hidden">
                         <h2 class="text-xl font-black uppercase italic text-white">Destaques</h2>
-                        <!-- Melhoria: Referência aos arquivos do GitHub solicitados -->
                         <div class="carousel-container custom-scrollbar">
-                            <div class="carousel-item rounded-xl border border-white/10 overflow-hidden aspect-[9/16] bg-black">
-                                <video autoplay muted loop playsinline class="w-full h-full object-cover">
-                                    <source src="video1.mp4.mp4" type="video/mp4">
-                                </video>
+                            <div class="carousel-item rounded-xl border border-white/10 overflow-hidden aspect-[9/16] bg-zinc-900 flex items-center justify-center">
+                                <span class="text-[8px] text-gray-700 uppercase font-black">Vídeo #1 VRZ</span>
                             </div>
-                            <div class="carousel-item rounded-xl border border-white/10 overflow-hidden aspect-[9/16] bg-black">
-                                <video autoplay muted loop playsinline class="w-full h-full object-cover">
-                                    <source src="video2.mp4.mp4" type="video/mp4">
-                                </video>
+                            <div class="carousel-item rounded-xl border border-white/10 overflow-hidden aspect-[9/16] bg-zinc-900 flex items-center justify-center">
+                                <span class="text-[8px] text-gray-700 uppercase font-black">Vídeo #2 VRZ</span>
                             </div>
-                            <div class="carousel-item rounded-xl border border-white/10 overflow-hidden aspect-[9/16] bg-black">
-                                <video autoplay muted loop playsinline class="w-full h-full object-cover">
-                                    <source src="video3.mp4.mp4" type="video/mp4">
-                                </video>
-                            </div>
-                            <div class="carousel-item rounded-xl border border-white/10 overflow-hidden aspect-[9/16] bg-black">
-                                <img src="video4.mp3.jpg" class="w-full h-full object-cover" alt="VRZ Destaque #4">
+                            <div class="carousel-item rounded-xl border border-white/10 overflow-hidden aspect-[9/16] bg-zinc-900 flex items-center justify-center">
+                                <span class="text-[8px] text-gray-700 uppercase font-black">Vídeo #3 VRZ</span>
                             </div>
                         </div>
-                        <p class="text-[8px] text-gray-600 italic text-center uppercase tracking-widest">Rigor técnico e excelência em cada detalhe.</p>
+                        <p class="text-[8px] text-gray-600 italic text-center uppercase tracking-widest">Excelência em cada detalhe.</p>
                     </div>
                 </div>
             </div>
@@ -277,14 +279,14 @@
         import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp, doc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
-            apiKey: "AIzaSyAfvmNT31fj5uQsDmb-q-kziFpWXMRxMzs",
+            apiKey: "", 
             authDomain: "portal-vrz-81ba7.firebaseapp.com",
             projectId: "portal-vrz-81ba7",
             storageBucket: "portal-vrz-81ba7.firebasestorage.app",
             messagingSenderId: "412528367584",
             appId: "1:412528367584:web:3868b331829839ae58bd85"
         };
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'vrz-portal-v2';
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'vrz-portal-master';
 
         let auth, db, user = null, isAdmin = false, currentSearchProtocol = "", statsChart = null, allDocsCache = [];
 
@@ -303,7 +305,7 @@
                 onAuthStateChanged(auth, (u) => {
                     user = u;
                     if (user) {
-                        document.getElementById('userIdDisplay').innerText = "SESSÃO SEGURA";
+                        document.getElementById('userIdDisplay').innerText = "CONECTADO";
                         document.getElementById('userIdDisplay').className = "text-green-500 italic uppercase";
                         loadSuggestions();
                     }
@@ -314,7 +316,7 @@
                 document.getElementById('exportMonth').value = `${now.getFullYear()}-${month}`;
 
             } catch (e) {
-                showModal("Erro de Conexão", "Não foi possível conectar aos servidores VRZ.");
+                console.error(e);
             } finally {
                 setTimeout(() => {
                     const l = document.getElementById('loader');
@@ -322,7 +324,7 @@
                         l.style.opacity = '0';
                         setTimeout(() => l.remove(), 500);
                     }
-                }, 1000);
+                }, 800);
             }
         };
 
@@ -342,14 +344,16 @@
             document.getElementById('modal-text').innerHTML = text;
             const actions = document.getElementById('modal-actions');
             actions.innerHTML = '';
+            
             const closeBtn = document.createElement('button');
-            closeBtn.className = "bg-gray-800 px-6 py-2 rounded-lg text-xs font-bold uppercase";
+            closeBtn.className = "bg-gray-800 px-6 py-2 rounded-lg text-xs font-bold uppercase hover:bg-gray-700 transition-colors";
             closeBtn.innerText = confirmCallback ? "Cancelar" : "Fechar";
             closeBtn.onclick = () => modal.style.display = 'none';
             actions.appendChild(closeBtn);
+            
             if (confirmCallback) {
                 const confirmBtn = document.createElement('button');
-                confirmBtn.className = "bg-red-600 px-6 py-2 rounded-lg text-xs font-bold uppercase";
+                confirmBtn.className = "bg-red-600 px-6 py-2 rounded-lg text-xs font-bold uppercase hover:bg-red-700 transition-colors";
                 confirmBtn.innerText = "Confirmar";
                 confirmBtn.onclick = () => { confirmCallback(); modal.style.display = 'none'; };
                 actions.appendChild(confirmBtn);
@@ -357,22 +361,33 @@
             modal.style.display = 'flex';
         };
 
+        // Lógica de Login atualizada com Usuário e Senha
         window.loginAdmin = () => {
             if (isAdmin) return;
-            const pass = prompt("Chave de Acesso Administrativo:");
-            if (pass === "VRZ2024") {
+            
+            const userLogin = prompt("Usuário Administrativo:");
+            if (userLogin === null) return;
+            
+            const passLogin = prompt("Senha:");
+            if (passLogin === null) return;
+
+            const admins = {
+                "Lucas.Sabino": "Vrz2024",
+                "Eduardo.Rocha": "Helito@1313"
+            };
+
+            if (admins[userLogin] === passLogin) {
                 isAdmin = true;
                 document.getElementById('adminIndicator').classList.remove('hidden');
                 document.getElementById('suggestionsHeader').classList.add('hidden');
                 document.getElementById('protocolSearchContainer').classList.add('hidden');
                 document.getElementById('adminStats').classList.remove('hidden');
                 loadSuggestions();
-            } else if (pass !== null) {
-                showModal("Erro", "Chave incorreta.");
+            } else {
+                showModal("Erro", "Credenciais administrativas incorretas.");
             }
         };
 
-        // Função para sair da área restrita sem recarregar
         window.logoutAdmin = () => {
             isAdmin = false;
             document.getElementById('adminIndicator').classList.add('hidden');
@@ -382,7 +397,6 @@
             currentSearchProtocol = "";
             document.getElementById('protocolInput').value = "";
             loadSuggestions();
-            showModal("Sessão Encerrada", "Você saiu da área restrita com sucesso.");
         };
 
         window.handleFileSelect = (input) => {
@@ -405,15 +419,28 @@
 
         document.getElementById('isAnonymous').onchange = (e) => {
             const nameInput = document.getElementById('userName');
+            const sectorInput = document.getElementById('userSector');
+            const prodLineInput = document.getElementById('userProdLine');
+            
             if(e.target.checked) {
                 nameInput.value = "";
                 nameInput.disabled = true;
                 nameInput.required = false;
-                nameInput.placeholder = "Modo Anônimo Ativado";
+                nameInput.placeholder = "MODO ANÔNIMO ATIVADO";
+                sectorInput.value = "";
+                sectorInput.disabled = true;
+                sectorInput.required = false;
+                prodLineInput.value = "";
+                prodLineInput.disabled = true;
             } else {
                 nameInput.disabled = false;
                 nameInput.required = true;
                 nameInput.placeholder = "Seu Nome";
+                sectorInput.disabled = false;
+                sectorInput.required = true;
+                sectorInput.placeholder = "Departamento";
+                prodLineInput.disabled = false;
+                prodLineInput.placeholder = "Linha de Produção (Opcional)";
             }
         };
 
@@ -425,43 +452,40 @@
         document.getElementById('btnExportPDF').onclick = () => {
             const monthStr = document.getElementById('exportMonth').value;
             if (!monthStr) return;
-
             const [year, month] = monthStr.split('-').map(Number);
             const filtered = allDocsCache.filter(doc => {
                 if (!doc.timestamp) return false;
                 const d = new Date(doc.timestamp.seconds * 1000);
                 return d.getFullYear() === year && (d.getMonth() + 1) === month;
             });
-
             if (filtered.length === 0) {
-                showModal("Exportar PDF", "Nenhuma ideia encontrada para o mês selecionado.");
+                showModal("Exportar PDF", "Nenhuma ideia encontrada para este período.");
                 return;
             }
-
             const { jsPDF } = window.jspdf;
             const pdf = new jsPDF();
-            pdf.setFontSize(18);
+            pdf.setFillColor(20, 20, 20);
+            pdf.rect(0, 0, 210, 40, 'F');
+            pdf.setFontSize(22);
             pdf.setTextColor(220, 38, 38);
-            pdf.text("VRZ BLINDADOS", 14, 22);
-            pdf.setFontSize(12);
-            pdf.setTextColor(100, 100, 100);
-            pdf.text(`RELATORIO DE INOVACAO - ${monthStr}`, 14, 30);
-
+            pdf.text("VRZ BLINDADOS", 14, 20);
+            pdf.setFontSize(10);
+            pdf.setTextColor(150, 150, 150);
+            pdf.text(`RELATÓRIO DE INOVAÇÃO CORPORATIVA - ${monthStr}`, 14, 30);
             const tableData = filtered.map(d => {
                 const date = new Date(d.timestamp.seconds * 1000).toLocaleDateString('pt-BR');
-                const status = d.adminReply ? "RESPONDIDO" : "PENDENTE";
-                return [d.protocol || '---', date, d.name || 'ANONIMO', d.text || '', status];
+                const status = d.adminReply ? "RESOLVIDO" : "EM ANÁLISE";
+                return [d.protocol || '---', date, d.name || 'ANÔNIMO', d.text || '', status];
             });
-
             pdf.autoTable({
-                startY: 40,
+                startY: 45,
                 head: [['PROTOCOLO', 'DATA', 'AUTOR', 'PROPOSTA', 'STATUS']],
                 body: tableData,
-                styles: { fontSize: 8 },
-                headStyles: { fillStyle: 'solid', fillColor: [220, 38, 38] }
+                styles: { fontSize: 8, fontStyle: 'italic' },
+                headStyles: { fillColor: [220, 38, 38] },
+                alternateRowStyles: { fillColor: [245, 245, 245] }
             });
-
-            pdf.save(`Relatorio_VRZ_Inovacao_${monthStr}.pdf`);
+            pdf.save(`Relatorio_VRZ_${monthStr}.pdf`);
         };
 
         const generateProtocol = () => {
@@ -472,19 +496,21 @@
             const ctx = document.getElementById('statsChart').getContext('2d');
             if (statsChart) statsChart.destroy();
             statsChart = new Chart(ctx, {
-                type: 'pie',
+                type: 'doughnut',
                 data: {
-                    labels: ['Aguardando', 'Respondidos'],
+                    labels: ['Pendente', 'Concluído'],
                     datasets: [{
                         data: [aguardando, respondidos],
                         backgroundColor: ['#dc2626', '#16a34a'],
-                        borderWidth: 0
+                        borderWidth: 0,
+                        hoverOffset: 4
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: { legend: { display: false } }
+                    plugins: { legend: { display: false } },
+                    cutout: '70%'
                 }
             });
             document.getElementById('countPending').innerText = aguardando;
@@ -494,166 +520,112 @@
         const loadSuggestions = () => {
             if (!user || !db) return;
             const suggestionsRef = collection(db, 'artifacts', appId, 'public', 'data', 'suggestions');
-            
             onSnapshot(suggestionsRef, (snap) => {
                 const list = document.getElementById('suggestionsList');
                 if(!list) return;
                 list.innerHTML = '';
-                
                 allDocsCache = snap.docs.map(d => ({id: d.id, ...d.data()}))
                     .sort((a,b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
-
                 let docsToShow = allDocsCache.filter(data => {
                     if (isAdmin) return true;
                     if (currentSearchProtocol && data.protocol === currentSearchProtocol) return true;
                     return false;
                 });
-
                 if (isAdmin) {
                     const pending = allDocsCache.filter(d => !d.adminReply).length;
                     const answered = allDocsCache.filter(d => d.adminReply).length;
                     updateChart(pending, answered);
                 }
-
                 if(docsToShow.length === 0) {
-                    if (isAdmin) {
-                        list.innerHTML = '<div class="text-center py-10 opacity-20 italic">Nenhuma proposta cadastrada.</div>';
-                    } else if (currentSearchProtocol) {
-                        list.innerHTML = '<div class="text-center py-10 opacity-20 italic">Protocolo não encontrado.</div>';
-                    } else {
-                        list.innerHTML = '<div class="text-center py-10 opacity-30 italic font-bold">INSIRA SEU PROTOCOLO PARA ACOMPANHAR SUA IDEIA.</div>';
-                    }
+                    const emptyMsg = isAdmin ? "Nenhuma proposta no banco de dados." : (currentSearchProtocol ? "Protocolo não localizado." : "Aguardando termo de pesquisa.");
+                    list.innerHTML = `<div class="text-center py-20 opacity-20 italic text-xs uppercase font-bold tracking-widest">${emptyMsg}</div>`;
                     return;
                 }
-
                 const renderCard = (data) => {
                     const div = document.createElement('div');
-                    div.className = 'glass p-4 rounded-2xl suggestion-card space-y-2 mb-4';
+                    div.className = 'glass p-5 rounded-2xl suggestion-card space-y-3 mb-4 border border-white/5 hover:border-red-600/20 transition-all';
                     const adminTools = isAdmin ? `
-                        <div class="flex gap-4 mt-2 pt-2 border-t border-white/5">
-                            <button data-id="${data.id}" class="btn-reply text-[7px] text-blue-500 font-black uppercase">Responder</button>
-                            <button data-id="${data.id}" class="btn-delete text-[7px] text-red-600 font-black uppercase">Excluir</button>
+                        <div class="flex gap-4 mt-3 pt-3 border-t border-white/5">
+                            <button data-id="${data.id}" class="btn-reply text-[8px] text-blue-500 font-black uppercase hover:underline">Responder</button>
+                            <button data-id="${data.id}" class="btn-delete text-[8px] text-red-600 font-black uppercase hover:underline">Eliminar</button>
                         </div>
                     ` : '';
                     const replyUI = data.adminReply ? `
                         <div class="reply-box">
-                            <span class="text-[7px] font-black uppercase text-red-600 block mb-1">Feedback VRZ</span>
-                            <p class="text-[10px] text-gray-400 italic">${data.adminReply}</p>
-                        </div>
-                    ` : '';
-                    const fileUI = data.attachmentName ? `
-                        <div class="flex items-center gap-2 bg-white/5 p-2 rounded-lg mt-2 border border-white/5">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" /></svg>
-                            <span class="text-[8px] text-gray-500 uppercase font-black truncate">${data.attachmentName}</span>
+                            <div class="flex items-center gap-2 mb-1">
+                                <div class="w-1 h-1 bg-red-600 rounded-full"></div>
+                                <span class="text-[7px] font-black uppercase text-red-600 block">Feedback VRZ</span>
+                            </div>
+                            <p class="text-[10px] text-gray-300 italic leading-relaxed">${data.adminReply}</p>
                         </div>
                     ` : '';
                     div.innerHTML = `
                         <div class="flex justify-between items-start">
                             <div class="flex flex-col">
-                                <span class="text-red-500 font-black uppercase text-[9px] tracking-widest">${data.name || 'Anônimo'}</span>
-                                <span class="text-[7px] text-gray-400 font-mono mt-1">PROTOCOLO: ${data.protocol || '---'}</span>
+                                <span class="text-red-500 font-black uppercase text-[10px] tracking-widest">${data.name || 'Anônimo'}</span>
+                                <span class="text-[7px] text-gray-500 font-mono mt-0.5">${data.protocol || '---'}</span>
                             </div>
-                            <span class="text-[7px] text-gray-700">${data.sector || ''} • Linha: ${data.prodLine || '-'}</span>
+                            <span class="text-[7px] text-gray-600 font-bold uppercase">${data.sector || ''} • ${data.prodLine || 'Geral'}</span>
                         </div>
-                        <p class="text-gray-300 italic text-[11px] font-light">"${data.text || ''}"</p>
-                        ${fileUI}
+                        <p class="text-gray-300 italic text-[11px] font-light leading-relaxed">"${data.text || ''}"</p>
                         ${replyUI}
                         ${adminTools}
                     `;
                     return div;
                 };
-
-                if (isAdmin) {
-                    const aguardando = docsToShow.filter(d => !d.adminReply);
-                    const respondidos = docsToShow.filter(d => d.adminReply);
-
-                    const headerPend = document.createElement('h3');
-                    headerPend.className = 'text-[10px] font-black uppercase text-red-600 tracking-[0.2em] px-2 mb-2';
-                    headerPend.innerText = `Aguardando Resposta (${aguardando.length})`;
-                    list.appendChild(headerPend);
-                    
-                    if(aguardando.length === 0) {
-                        const empty = document.createElement('div');
-                        empty.className = 'text-center py-4 opacity-20 italic text-[10px]';
-                        empty.innerText = 'Tudo em dia!';
-                        list.appendChild(empty);
-                    } else {
-                        aguardando.forEach(data => list.appendChild(renderCard(data)));
-                    }
-
-                    const headerResp = document.createElement('h3');
-                    headerResp.className = 'text-[10px] font-black uppercase text-green-600 tracking-[0.2em] px-2 mt-8 mb-2';
-                    headerResp.innerText = `Respondidos (${respondidos.length})`;
-                    list.appendChild(headerResp);
-
-                    if(respondidos.length === 0) {
-                        const empty = document.createElement('div');
-                        empty.className = 'text-center py-4 opacity-20 italic text-[10px]';
-                        empty.innerText = 'Nenhuma resposta enviada.';
-                        list.appendChild(empty);
-                    } else {
-                        respondidos.forEach(data => list.appendChild(renderCard(data)));
-                    }
-                } else {
-                    docsToShow.forEach(data => list.appendChild(renderCard(data)));
-                }
-
+                docsToShow.forEach(data => list.appendChild(renderCard(data)));
                 if(isAdmin) {
                     list.querySelectorAll('.btn-delete').forEach(btn => {
-                        btn.onclick = () => {
-                            showModal("Confirmar Exclusão", "Remover esta proposta?", async () => {
-                                try { await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'suggestions', btn.dataset.id)); } catch (e) { console.error(e); }
+                        btn.onclick = (e) => {
+                            e.stopPropagation();
+                            showModal("Eliminar Registro", "Tem certeza que deseja apagar esta proposta?", async () => {
+                                try { await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'suggestions', btn.dataset.id)); } catch (err) { console.error(err); }
                             });
                         };
                     });
                     list.querySelectorAll('.btn-reply').forEach(btn => {
-                        btn.onclick = () => {
-                            const r = prompt("Resposta Oficial VRZ:");
+                        btn.onclick = (e) => {
+                            e.stopPropagation();
+                            const r = prompt("Escreva sua resposta oficial VRZ:");
                             if(r) { updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'suggestions', btn.dataset.id), { adminReply: r }); }
                         };
                     });
                 }
-            }, (err) => console.error(err));
+            });
         };
 
         document.getElementById('feedbackForm').onsubmit = async (e) => {
             e.preventDefault();
             if (!user || !db) return;
-
             const protocol = generateProtocol();
             const isAnon = document.getElementById('isAnonymous').checked;
-            const fileInput = document.getElementById('userFile');
             const btn = document.getElementById('submitBtn');
-            
             const data = {
                 name: isAnon ? 'Anônimo' : document.getElementById('userName').value.trim(),
-                sector: document.getElementById('userSector').value.trim(),
-                prodLine: document.getElementById('userProdLine').value.trim(),
+                sector: isAnon ? 'Anônimo' : document.getElementById('userSector').value.trim(),
+                prodLine: isAnon ? 'Anônimo' : document.getElementById('userProdLine').value.trim(),
                 text: document.getElementById('userText').value.trim(),
                 protocol: protocol,
                 timestamp: serverTimestamp(),
-                attachmentName: fileInput.files[0] ? fileInput.files[0].name : null,
-                attachmentType: fileInput.files[0] ? fileInput.files[0].type : null
+                attachmentName: document.getElementById('userFile').files[0]?.name || null
             };
-
             btn.disabled = true;
-            btn.innerText = "ENVIANDO...";
-
+            btn.innerText = "SINCRO...";
             try {
                 await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'suggestions'), data);
-                document.getElementById('userText').value = '';
-                document.getElementById('userName').value = '';
+                document.getElementById('feedbackForm').reset();
                 removeSelectedFile();
-                showModal("Proposta Recebida!", `Sua ideia foi registrada. ANOTE SEU PROTOCOLO PARA ACOMPANHAR: <br><span class='text-red-600 text-lg font-black underline decoration-2 block mt-2 select-all'>${protocol}</span>`);
-                btn.innerText = "ENVIADO!";
+                showModal("Proposta Registrada", `Anote seu protocolo de acompanhamento:<br><br><span class='text-red-600 text-2xl font-black underline tracking-widest block select-all'>${protocol}</span><br><p class='text-[10px] text-gray-500 italic'>Você precisará deste código para ver a resposta da administração.</p>`);
+                btn.innerText = "SUCESSO!";
                 btn.classList.replace('bg-red-600', 'bg-green-600');
                 setTimeout(() => { 
                     btn.innerText = "Enviar Proposta"; 
                     btn.disabled = false;
                     btn.classList.replace('bg-green-600', 'bg-red-600');
-                }, 4000);
+                }, 3000);
             } catch (err) {
-                btn.innerText = "ERRO";
+                console.error(err);
+                btn.innerText = "ERRO DE REDE";
                 btn.disabled = false;
             }
         };
