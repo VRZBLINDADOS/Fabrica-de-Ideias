@@ -6,7 +6,6 @@
     <title>VRZ Blindados - Portal Oficial</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Bibliotecas para geração de PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
@@ -91,6 +90,7 @@
 
     <main class="max-w-6xl mx-auto p-4 md:p-8">
 
+        <!-- PAGE: SUGGESTIONS -->
         <section id="page-suggestions" class="page-content active space-y-10">
             <div class="text-center space-y-2">
                 <h1 class="text-4xl md:text-5xl font-black italic uppercase">Fábrica de <span class="text-red-600">Ideias</span></h1>
@@ -111,9 +111,18 @@
                             </label>
                         </div>
                         
-                        <input type="text" id="userName" required class="input-field" placeholder="Seu Nome">
-                        <input type="text" id="userSector" required class="input-field" placeholder="Departamento">
-                        <input type="text" id="userProdLine" class="input-field" placeholder="Linha de Produção (Opcional)">
+                        <div id="nameContainer">
+                            <input type="text" id="userName" required class="input-field" placeholder="Seu Nome">
+                        </div>
+
+                        <div id="sectorContainer">
+                            <input type="text" id="userSector" class="input-field" placeholder="Departamento (Opcional)">
+                        </div>
+
+                        <div id="prodLineContainer">
+                            <input type="text" id="userProdLine" class="input-field" placeholder="Linha de Produção (Opcional)">
+                        </div>
+
                         <textarea id="userText" required rows="4" class="input-field resize-none" placeholder="Descreva sua ideia de forma clara..."></textarea>
                         
                         <div class="px-2 space-y-2">
@@ -196,7 +205,7 @@
             </div>
         </section>
 
-        <!-- SOBRE -->
+        <!-- PAGE: ABOUT -->
         <section id="page-about" class="page-content space-y-12">
             <div class="text-center space-y-4">
                 <h1 class="text-4xl md:text-7xl font-black italic uppercase leading-none">Somos <span class="text-red-600">VRZ</span></h1>
@@ -251,25 +260,15 @@
                 <div class="space-y-6">
                     <div class="glass p-6 md:p-8 rounded-[2rem] border border-white/5 space-y-6 overflow-hidden">
                         <h2 class="text-xl font-black uppercase italic text-white">Destaques</h2>
-                        <!-- Seção de Destaques atualizada com os arquivos do GitHub -->
                         <div class="carousel-container custom-scrollbar">
-                            <div class="carousel-item rounded-xl border border-white/10 overflow-hidden aspect-[9/16] bg-black">
-                                <video autoplay muted loop playsinline class="w-full h-full object-cover">
-                                    <source src="video1.mp4.mp4" type="video/mp4">
-                                </video>
+                            <div class="carousel-item rounded-xl border border-white/10 overflow-hidden aspect-[9/16] bg-neutral-900 flex items-center justify-center">
+                                <span class="text-[8px] uppercase font-bold text-gray-600 italic">VRZ Media #1</span>
                             </div>
-                            <div class="carousel-item rounded-xl border border-white/10 overflow-hidden aspect-[9/16] bg-black">
-                                <video autoplay muted loop playsinline class="w-full h-full object-cover">
-                                    <source src="video2.mp4.mp4" type="video/mp4">
-                                </video>
+                            <div class="carousel-item rounded-xl border border-white/10 overflow-hidden aspect-[9/16] bg-neutral-900 flex items-center justify-center">
+                                <span class="text-[8px] uppercase font-bold text-gray-600 italic">VRZ Media #2</span>
                             </div>
-                            <div class="carousel-item rounded-xl border border-white/10 overflow-hidden aspect-[9/16] bg-black">
-                                <video autoplay muted loop playsinline class="w-full h-full object-cover">
-                                    <source src="video3.mp4.mp4" type="video/mp4">
-                                </video>
-                            </div>
-                            <div class="carousel-item rounded-xl border border-white/10 overflow-hidden aspect-[9/16] bg-black">
-                                <img src="video4.mp3.jpg" class="w-full h-full object-cover" alt="VRZ Destaque #4">
+                            <div class="carousel-item rounded-xl border border-white/10 overflow-hidden aspect-[9/16] bg-neutral-900 flex items-center justify-center">
+                                <span class="text-[8px] uppercase font-bold text-gray-600 italic">VRZ Media #3</span>
                             </div>
                         </div>
                         <p class="text-[8px] text-gray-600 italic text-center uppercase tracking-widest">Excelência em cada detalhe.</p>
@@ -315,24 +314,28 @@
                 onAuthStateChanged(auth, (u) => {
                     user = u;
                     if (user) {
-                        document.getElementById('userIdDisplay').innerText = "CONECTADO";
-                        document.getElementById('userIdDisplay').className = "text-green-500 italic uppercase";
-                        loadSuggestions();
+                        const statusEl = document.getElementById('userIdDisplay');
+                        if (statusEl) {
+                            statusEl.innerText = "CONECTADO";
+                            statusEl.className = "text-green-500 italic uppercase";
+                        }
+                        setupSuggestionsListener();
                     }
                 });
 
                 const now = new Date();
                 const month = String(now.getMonth() + 1).padStart(2, '0');
-                document.getElementById('exportMonth').value = `${now.getFullYear()}-${month}`;
+                const monthEl = document.getElementById('exportMonth');
+                if (monthEl) monthEl.value = `${now.getFullYear()}-${month}`;
 
             } catch (e) {
-                console.error(e);
+                console.error("Firebase Init Error:", e);
             } finally {
                 setTimeout(() => {
-                    const l = document.getElementById('loader');
-                    if(l) {
-                        l.style.opacity = '0';
-                        setTimeout(() => l.remove(), 500);
+                    const loader = document.getElementById('loader');
+                    if(loader) {
+                        loader.style.opacity = '0';
+                        setTimeout(() => loader.remove(), 500);
                     }
                 }, 800);
             }
@@ -340,9 +343,16 @@
 
         window.addEventListener('load', init);
 
+        // Navigation
         window.showPage = (id) => {
             document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            
+            const mS = document.getElementById('m-nav-suggestions');
+            const mA = document.getElementById('m-nav-about');
+            if (mS) mS.className = id === 'suggestions' ? 'w-2 h-2 rounded-full bg-red-600' : 'w-2 h-2 rounded-full bg-transparent';
+            if (mA) mA.className = id === 'about' ? 'w-2 h-2 rounded-full bg-red-600' : 'w-2 h-2 rounded-full bg-transparent';
+
             document.getElementById(`page-${id}`)?.classList.add('active');
             document.getElementById(`nav-${id}`)?.classList.add('active');
             window.scrollTo({top: 0, behavior: 'smooth'});
@@ -371,9 +381,9 @@
             modal.style.display = 'flex';
         };
 
+        // Admin Access
         window.loginAdmin = () => {
             if (isAdmin) return;
-            
             const modal = document.getElementById('custom-modal');
             document.getElementById('modal-title').innerText = "Acesso Administrativo";
             document.getElementById('modal-text').innerHTML = `
@@ -388,40 +398,31 @@
                     </div>
                 </div>
             `;
-            
             const actions = document.getElementById('modal-actions');
             actions.innerHTML = '';
-            
             const cancelBtn = document.createElement('button');
             cancelBtn.className = "bg-gray-800 px-6 py-2 rounded-lg text-xs font-bold uppercase hover:bg-gray-700 transition-colors";
             cancelBtn.innerText = "Cancelar";
             cancelBtn.onclick = () => modal.style.display = 'none';
-            
             const loginBtn = document.createElement('button');
             loginBtn.className = "bg-red-600 px-6 py-2 rounded-lg text-xs font-bold uppercase hover:bg-red-700 transition-colors";
             loginBtn.innerText = "Acessar";
             loginBtn.onclick = () => {
                 const userLogin = document.getElementById('adminUser').value;
                 const passLogin = document.getElementById('adminPass').value;
-
-                const admins = {
-                    "Lucas.Sabino": "Vrz2024",
-                    "Eduardo.Rocha": "Helito@1313"
-                };
-
+                const admins = { "Lucas.Sabino": "Vrz2024", "Eduardo.Rocha": "Helito@1313" };
                 if (admins[userLogin] === passLogin) {
                     isAdmin = true;
                     document.getElementById('adminIndicator').classList.remove('hidden');
                     document.getElementById('suggestionsHeader').classList.add('hidden');
                     document.getElementById('protocolSearchContainer').classList.add('hidden');
                     document.getElementById('adminStats').classList.remove('hidden');
-                    loadSuggestions();
+                    renderSuggestions();
                     modal.style.display = 'none';
                 } else {
                     showModal("Erro", "Credenciais administrativas incorretas.");
                 }
             };
-            
             actions.appendChild(cancelBtn);
             actions.appendChild(loginBtn);
             modal.style.display = 'flex';
@@ -435,9 +436,10 @@
             document.getElementById('adminStats').classList.add('hidden');
             currentSearchProtocol = "";
             document.getElementById('protocolInput').value = "";
-            loadSuggestions();
+            renderSuggestions();
         };
 
+        // Form Handling
         window.handleFileSelect = (input) => {
             const display = document.getElementById('fileNameDisplay');
             const removeBtn = document.getElementById('btnRemoveFile');
@@ -451,50 +453,45 @@
             const input = document.getElementById('userFile');
             const display = document.getElementById('fileNameDisplay');
             const removeBtn = document.getElementById('btnRemoveFile');
-            input.value = "";
-            display.innerText = "Selecionar Arquivo";
-            removeBtn.classList.add('hidden');
+            if (input) input.value = "";
+            if (display) display.innerText = "Selecionar Arquivo";
+            if (removeBtn) removeBtn.classList.add('hidden');
         };
 
         document.getElementById('isAnonymous').onchange = (e) => {
-            const nameInput = document.getElementById('userName');
-            const sectorInput = document.getElementById('userSector');
-            const prodLineInput = document.getElementById('userProdLine');
+            const isChecked = e.target.checked;
+            const containers = ['nameContainer', 'sectorContainer', 'prodLineContainer'];
             
-            if(e.target.checked) {
-                nameInput.value = "";
-                nameInput.disabled = true;
+            containers.forEach(id => {
+                const el = document.getElementById(id);
+                if (isChecked) {
+                    el.classList.add('hidden');
+                } else {
+                    el.classList.remove('hidden');
+                }
+            });
+
+            const nameInput = document.getElementById('userName');
+            if (isChecked) {
                 nameInput.required = false;
-                nameInput.placeholder = "MODO ANÔNIMO ATIVADO";
-                sectorInput.value = "";
-                sectorInput.disabled = true;
-                sectorInput.required = false;
-                prodLineInput.value = "";
-                prodLineInput.disabled = true;
+                nameInput.value = "";
             } else {
-                nameInput.disabled = false;
                 nameInput.required = true;
-                nameInput.placeholder = "Seu Nome";
-                sectorInput.disabled = false;
-                sectorInput.required = true;
-                sectorInput.placeholder = "Departamento";
-                prodLineInput.disabled = false;
-                prodLineInput.placeholder = "Linha de Produção (Opcional)";
             }
         };
 
         document.getElementById('btnSearchProtocol').onclick = () => {
             currentSearchProtocol = document.getElementById('protocolInput').value.trim().toUpperCase();
-            loadSuggestions();
+            renderSuggestions();
         };
 
         document.getElementById('btnExportPDF').onclick = () => {
             const monthStr = document.getElementById('exportMonth').value;
             if (!monthStr) return;
             const [year, month] = monthStr.split('-').map(Number);
-            const filtered = allDocsCache.filter(doc => {
-                if (!doc.timestamp) return false;
-                const d = new Date(doc.timestamp.seconds * 1000);
+            const filtered = allDocsCache.filter(docData => {
+                if (!docData.timestamp) return false;
+                const d = new Date(docData.timestamp.seconds * 1000);
                 return d.getFullYear() === year && (d.getMonth() + 1) === month;
             });
             if (filtered.length === 0) {
@@ -512,9 +509,9 @@
             pdf.setTextColor(150, 150, 150);
             pdf.text(`RELATÓRIO DE INOVAÇÃO CORPORATIVA - ${monthStr}`, 14, 30);
             const tableData = filtered.map(d => {
-                const date = new Date(d.timestamp.seconds * 1000).toLocaleDateString('pt-BR');
+                const dateStr = d.timestamp ? new Date(d.timestamp.seconds * 1000).toLocaleDateString('pt-BR') : '---';
                 const status = d.adminReply ? "RESOLVIDO" : "EM ANÁLISE";
-                return [d.protocol || '---', date, d.name || 'ANÔNIMO', d.text || '', status];
+                return [d.protocol || '---', dateStr, d.name || 'ANÔNIMO', d.text || '', status];
             });
             pdf.autoTable({
                 startY: 45,
@@ -527,12 +524,13 @@
             pdf.save(`Relatorio_VRZ_${monthStr}.pdf`);
         };
 
-        const generateProtocol = () => {
-            return 'VRZ-' + Math.random().toString(36).substring(2, 8).toUpperCase();
-        };
+        // Data Management
+        const generateProtocol = () => 'VRZ-' + Math.random().toString(36).substring(2, 8).toUpperCase();
 
         const updateChart = (aguardando, respondidos) => {
-            const ctx = document.getElementById('statsChart').getContext('2d');
+            const canvas = document.getElementById('statsChart');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
             if (statsChart) statsChart.destroy();
             statsChart = new Chart(ctx, {
                 type: 'doughnut',
@@ -556,116 +554,120 @@
             document.getElementById('countAnswered').innerText = respondidos;
         };
 
-        const loadSuggestions = () => {
+        const setupSuggestionsListener = () => {
             if (!user || !db) return;
             const suggestionsRef = collection(db, 'artifacts', appId, 'public', 'data', 'suggestions');
             onSnapshot(suggestionsRef, (snap) => {
-                const list = document.getElementById('suggestionsList');
-                if(!list) return;
-                list.innerHTML = '';
                 allDocsCache = snap.docs.map(d => ({id: d.id, ...d.data()}))
                     .sort((a,b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
-                let docsToShow = allDocsCache.filter(data => {
-                    if (isAdmin) return true;
-                    if (currentSearchProtocol && data.protocol === currentSearchProtocol) return true;
-                    return false;
-                });
-                if (isAdmin) {
-                    const pending = allDocsCache.filter(d => !d.adminReply).length;
-                    const answered = allDocsCache.filter(d => d.adminReply).length;
-                    updateChart(pending, answered);
-                }
-                if(docsToShow.length === 0) {
-                    const emptyMsg = isAdmin ? "Nenhuma proposta no banco de dados." : (currentSearchProtocol ? "Protocolo não localizado." : "Aguardando termo de pesquisa.");
-                    list.innerHTML = `<div class="text-center py-20 opacity-20 italic text-xs uppercase font-bold tracking-widest">${emptyMsg}</div>`;
-                    return;
-                }
-                const renderCard = (data) => {
-                    const div = document.createElement('div');
-                    div.className = 'glass p-5 rounded-2xl suggestion-card space-y-3 mb-4 border border-white/5 hover:border-red-600/20 transition-all';
-                    const adminTools = isAdmin ? `
-                        <div class="flex gap-4 mt-3 pt-3 border-t border-white/5">
-                            <button data-id="${data.id}" class="btn-reply text-[8px] text-blue-500 font-black uppercase hover:underline">Responder</button>
-                            <button data-id="${data.id}" class="btn-delete text-[8px] text-red-600 font-black uppercase hover:underline">Eliminar</button>
+                renderSuggestions();
+            }, (error) => console.error(error));
+        };
+
+        const renderSuggestions = () => {
+            const list = document.getElementById('suggestionsList');
+            if(!list) return;
+            list.innerHTML = '';
+            let docsToShow = allDocsCache.filter(data => {
+                if (isAdmin) return true;
+                if (currentSearchProtocol && data.protocol === currentSearchProtocol) return true;
+                return false;
+            });
+            if (isAdmin) {
+                const pending = allDocsCache.filter(d => !d.adminReply).length;
+                const answered = allDocsCache.filter(d => d.adminReply).length;
+                updateChart(pending, answered);
+            }
+            if(docsToShow.length === 0) {
+                const emptyMsg = isAdmin ? "Nenhuma proposta no banco de dados." : (currentSearchProtocol ? "Protocolo não localizado." : "Aguardando termo de pesquisa.");
+                list.innerHTML = `<div class="text-center py-20 opacity-20 italic text-xs uppercase font-bold tracking-widest">${emptyMsg}</div>`;
+                return;
+            }
+            docsToShow.forEach(data => {
+                const div = document.createElement('div');
+                div.className = 'glass p-5 rounded-2xl suggestion-card space-y-3 mb-4 border border-white/5 hover:border-red-600/20 transition-all';
+                const adminTools = isAdmin ? `
+                    <div class="flex gap-4 mt-3 pt-3 border-t border-white/5">
+                        <button data-id="${data.id}" class="btn-reply text-[8px] text-blue-500 font-black uppercase hover:underline">Responder</button>
+                        <button data-id="${data.id}" class="btn-delete text-[8px] text-red-600 font-black uppercase hover:underline">Eliminar</button>
+                    </div>` : '';
+                const replyUI = data.adminReply ? `
+                    <div class="reply-box">
+                        <div class="flex items-center gap-2 mb-1">
+                            <div class="w-1 h-1 bg-red-600 rounded-full"></div>
+                            <span class="text-[7px] font-black uppercase text-red-600 block">Feedback VRZ</span>
                         </div>
-                    ` : '';
-                    const replyUI = data.adminReply ? `
-                        <div class="reply-box">
-                            <div class="flex items-center gap-2 mb-1">
-                                <div class="w-1 h-1 bg-red-600 rounded-full"></div>
-                                <span class="text-[7px] font-black uppercase text-red-600 block">Feedback VRZ</span>
-                            </div>
-                            <p class="text-[10px] text-gray-300 italic leading-relaxed">${data.adminReply}</p>
+                        <p class="text-[10px] text-gray-300 italic leading-relaxed">${data.adminReply}</p>
+                    </div>` : '';
+                div.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div class="flex flex-col">
+                            <span class="text-red-500 font-black uppercase text-[10px] tracking-widest">${data.name || 'Anônimo'}</span>
+                            <span class="text-[7px] text-gray-500 font-mono mt-0.5">${data.protocol || '---'}</span>
                         </div>
-                    ` : '';
-                    div.innerHTML = `
-                        <div class="flex justify-between items-start">
-                            <div class="flex flex-col">
-                                <span class="text-red-500 font-black uppercase text-[10px] tracking-widest">${data.name || 'Anônimo'}</span>
-                                <span class="text-[7px] text-gray-500 font-mono mt-0.5">${data.protocol || '---'}</span>
-                            </div>
-                            <span class="text-[7px] text-gray-600 font-bold uppercase">${data.sector || ''} • ${data.prodLine || 'Geral'}</span>
-                        </div>
-                        <p class="text-gray-300 italic text-[11px] font-light leading-relaxed">"${data.text || ''}"</p>
-                        ${replyUI}
-                        ${adminTools}
-                    `;
-                    return div;
-                };
-                docsToShow.forEach(data => list.appendChild(renderCard(data)));
+                        <span class="text-[7px] text-gray-600 font-bold uppercase">${data.sector || ''} ${data.prodLine ? '• ' + data.prodLine : ''}</span>
+                    </div>
+                    <p class="text-gray-300 italic text-[11px] font-light leading-relaxed">"${data.text || ''}"</p>
+                    ${replyUI}
+                    ${adminTools}`;
                 if(isAdmin) {
-                    list.querySelectorAll('.btn-delete').forEach(btn => {
-                        btn.onclick = (e) => {
-                            e.stopPropagation();
-                            showModal("Eliminar Registro", "Tem certeza que deseja apagar esta proposta?", async () => {
-                                try { await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'suggestions', btn.dataset.id)); } catch (err) { console.error(err); }
-                            });
-                        };
+                    div.querySelector('.btn-delete').onclick = () => showModal("Eliminar", "Deseja apagar?", async () => {
+                        await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'suggestions', data.id));
                     });
-                    list.querySelectorAll('.btn-reply').forEach(btn => {
-                        btn.onclick = (e) => {
-                            e.stopPropagation();
-                            const r = prompt("Escreva sua resposta oficial VRZ:");
-                            if(r) { updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'suggestions', btn.dataset.id), { adminReply: r }); }
-                        };
-                    });
+                    div.querySelector('.btn-reply').onclick = () => {
+                        const r = prompt("Resposta:", data.adminReply || "");
+                        if(r !== null) updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'suggestions', data.id), { adminReply: r });
+                    };
                 }
+                list.appendChild(div);
             });
         };
 
+        // Form Submission Logic
         document.getElementById('feedbackForm').onsubmit = async (e) => {
             e.preventDefault();
-            if (!user || !db) return;
+            if (!user || !db) {
+                showModal("Erro", "Sistema ainda está conectando. Por favor, aguarde alguns segundos.");
+                return;
+            }
+            
             const protocol = generateProtocol();
             const isAnon = document.getElementById('isAnonymous').checked;
             const btn = document.getElementById('submitBtn');
+            
             const data = {
                 name: isAnon ? 'Anônimo' : document.getElementById('userName').value.trim(),
-                sector: isAnon ? 'Anônimo' : document.getElementById('userSector').value.trim(),
-                prodLine: isAnon ? 'Anônimo' : document.getElementById('userProdLine').value.trim(),
+                sector: isAnon ? 'Anônimo' : (document.getElementById('userSector').value.trim() || 'Não Informado'),
+                prodLine: isAnon ? 'Anônimo' : (document.getElementById('userProdLine').value.trim() || 'Geral'),
                 text: document.getElementById('userText').value.trim(),
                 protocol: protocol,
                 timestamp: serverTimestamp(),
                 attachmentName: document.getElementById('userFile').files[0]?.name || null
             };
+
             btn.disabled = true;
             btn.innerText = "SINCRO...";
+            
             try {
                 await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'suggestions'), data);
                 document.getElementById('feedbackForm').reset();
                 removeSelectedFile();
+                
                 showModal("Proposta Registrada", `Anote seu protocolo de acompanhamento:<br><br><span class='text-red-600 text-2xl font-black underline tracking-widest block select-all'>${protocol}</span><br><p class='text-[10px] text-gray-500 italic'>Você precisará deste código para ver a resposta da administração.</p>`);
+                
                 btn.innerText = "SUCESSO!";
                 btn.classList.replace('bg-red-600', 'bg-green-600');
+                
                 setTimeout(() => { 
                     btn.innerText = "Enviar Proposta"; 
                     btn.disabled = false;
                     btn.classList.replace('bg-green-600', 'bg-red-600');
                 }, 3000);
             } catch (err) {
-                console.error(err);
+                console.error("Submission Error:", err);
                 btn.innerText = "ERRO DE REDE";
                 btn.disabled = false;
+                showModal("Erro no Envio", "Não foi possível enviar sua ideia. Verifique sua conexão e tente novamente.");
             }
         };
     </script>
