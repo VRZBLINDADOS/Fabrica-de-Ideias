@@ -22,27 +22,20 @@
         .custom-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
-        
-        .icon-box { background: linear-gradient(135deg, #dc2626 0%, #7f1d1d 100%); width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; border-radius: 12px; margin-bottom: 20px; }
-        
         .input-field { width: 100%; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 14px; font-size: 13px; color: white; outline: none; transition: all 0.3s; }
         .input-field:focus { border-color: #dc2626; background: rgba(255,255,255,0.05); }
-        .input-field:disabled { opacity: 0.3; cursor: not-allowed; }
         .suggestion-card { border-left: 3px solid #dc2626; transition: all 0.3s; }
-        
+        .reply-box { margin-top: 10px; padding: 10px; background: rgba(220, 38, 38, 0.05); border-radius: 8px; border-left: 2px solid #dc2626; }
+        #custom-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 10000; align-items: center; justify-content: center; padding: 20px; }
+        .modal-content { background: #111; border: 1px solid #dc2626; border-radius: 20px; padding: 30px; width: 100%; max-width: 400px; text-align: center; }
+        .admin-btn { font-size: 10px; color: #555; transition: color 0.3s; cursor: pointer; }
+        .admin-btn:hover { color: #dc2626; }
+        .icon-box { background: linear-gradient(135deg, #dc2626 0%, #7f1d1d 100%); width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; border-radius: 12px; margin-bottom: 20px; }
         .carousel-container { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 10px; }
         .carousel-item { flex: 0 0 85%; scroll-snap-align: start; }
         @media (min-width: 768px) { .carousel-item { flex: 0 0 calc(25% - 10px); } }
-
         .mobile-nav { position: fixed; bottom: 0; left: 0; right: 0; display: flex; justify-content: space-around; padding: 15px; background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(10px); border-top: 1px solid rgba(255,255,255,0.05); z-index: 100; }
         @media (min-width: 768px) { .mobile-nav { display: none; } }
-
-        .admin-btn { font-size: 10px; color: #555; transition: color 0.3s; outline: none; cursor: pointer; }
-        .admin-btn:hover { color: #dc2626; }
-        .reply-box { margin-top: 10px; padding: 10px; background: rgba(220, 38, 38, 0.05); border-radius: 8px; border-left: 2px solid #dc2626; }
-        
-        #custom-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 10000; align-items: center; justify-content: center; padding: 20px; }
-        .modal-content { background: #111; border: 1px solid #dc2626; border-radius: 20px; padding: 30px; width: 100%; max-width: 400px; text-align: center; }
     </style>
 </head>
 <body class="min-h-screen">
@@ -55,11 +48,11 @@
     </div>
 
     <div id="custom-modal">
-        <div class="modal-content">
+        <div class="modal-content shadow-2xl shadow-red-600/10">
             <h3 id="modal-title" class="text-xl font-black italic uppercase text-red-600 mb-4">Aviso</h3>
             <div id="modal-text" class="text-sm text-gray-400 mb-6 italic leading-relaxed"></div>
             <div id="modal-actions" class="flex gap-4 justify-center">
-                <button id="modal-close" class="bg-gray-800 px-6 py-2 rounded-lg text-xs font-bold uppercase hover:bg-gray-700">Fechar</button>
+                <button id="modal-close" class="bg-gray-800 px-6 py-2 rounded-lg text-xs font-bold uppercase hover:bg-gray-700 transition-all">Fechar</button>
             </div>
         </div>
     </div>
@@ -89,8 +82,8 @@
     </div>
 
     <main class="max-w-6xl mx-auto p-4 md:p-8">
-
-        <!-- PAGE: SUGGESTIONS -->
+        
+        <!-- PÁGINA: SUGESTÕES -->
         <section id="page-suggestions" class="page-content active space-y-10">
             <div class="text-center space-y-2">
                 <h1 class="text-4xl md:text-5xl font-black italic uppercase">Fábrica de <span class="text-red-600">Ideias</span></h1>
@@ -98,7 +91,6 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-5 gap-8">
-                <!-- FORMULÁRIO -->
                 <div class="md:col-span-2 glass p-6 rounded-[2rem] space-y-4">
                     <h2 class="text-xl font-black uppercase italic border-b border-white/5 pb-2">Nova Proposta</h2>
                     <form id="feedbackForm" class="space-y-4">
@@ -106,54 +98,43 @@
                             <span class="text-[10px] uppercase font-bold text-gray-400">Modo de Identificação</span>
                             <label class="relative inline-flex items-center cursor-pointer">
                                 <input type="checkbox" id="isAnonymous" class="sr-only peer">
-                                <div class="w-10 h-5 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-red-600"></div>
+                                <div class="w-10 h-5 bg-gray-700 rounded-full peer peer-checked:bg-red-600 peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all"></div>
                                 <span class="ml-2 text-[10px] uppercase font-bold text-gray-400">Anônimo</span>
                             </label>
                         </div>
                         
-                        <div id="nameContainer">
-                            <input type="text" id="userName" required class="input-field" placeholder="Seu Nome">
-                        </div>
-
-                        <div id="sectorContainer">
-                            <input type="text" id="userSector" class="input-field" placeholder="Departamento (Opcional)">
-                        </div>
-
-                        <div id="prodLineContainer">
-                            <input type="text" id="userProdLine" class="input-field" placeholder="Linha de Produção (Opcional)">
-                        </div>
-
+                        <div id="nameContainer"><input type="text" id="userName" required class="input-field" placeholder="Seu Nome"></div>
+                        <div id="sectorContainer"><input type="text" id="userSector" class="input-field" placeholder="Departamento (Opcional)"></div>
+                        <div id="prodLineContainer"><input type="text" id="userProdLine" class="input-field" placeholder="Linha de Produção (Opcional)"></div>
+                        
                         <textarea id="userText" required rows="4" class="input-field resize-none" placeholder="Descreva sua ideia de forma clara..."></textarea>
                         
-                        <div class="px-2 space-y-2">
-                            <label class="block text-[9px] font-black uppercase text-gray-500 tracking-widest">Anexar Documento ou Imagem</label>
-                            <div class="flex items-center gap-3">
-                                <button type="button" onclick="document.getElementById('userFile').click()" class="flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 px-4 py-3 rounded-xl transition-all group">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-400 group-hover:text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" /></svg>
-                                    <span id="fileNameDisplay" class="text-[11px] text-gray-400 uppercase font-bold truncate max-w-[120px]">Selecionar Arquivo</span>
-                                </button>
-                                <input type="file" id="userFile" class="hidden" onchange="handleFileSelect(this)">
-                                <button type="button" id="btnRemoveFile" class="hidden text-red-600 opacity-50 hover:opacity-100" onclick="removeSelectedFile()">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                                </button>
-                            </div>
-                        </div>
-
                         <button type="submit" id="submitBtn" class="w-full bg-red-600 py-4 rounded-xl font-black uppercase italic tracking-tighter hover:bg-red-700 transition-all">Enviar Proposta</button>
                     </form>
                 </div>
 
-                <!-- LISTA E ACOMPANHAMENTO -->
                 <div class="md:col-span-3 space-y-4">
                     <div class="flex flex-col gap-4">
                         <div class="flex items-center justify-between px-2">
-                            <button onclick="loginAdmin()" id="suggestionsHeader" class="text-sm font-bold uppercase italic text-gray-500 admin-btn">Área Restrita</button>
+                            <button onclick="loginAdminModal()" id="suggestionsHeader" class="text-sm font-bold uppercase italic text-gray-500 admin-btn">Área Restrita</button>
                             <div id="adminIndicator" class="hidden flex items-center gap-4">
-                                <span class="text-[8px] font-black text-red-600 uppercase tracking-widest animate-pulse">Painel Administrativo VRZ Ativo</span>
-                                <button onclick="logoutAdmin()" class="text-[8px] font-black text-white bg-red-600/20 hover:bg-red-600 px-2 py-1 rounded transition-all uppercase border border-red-600/30">Sair</button>
+                                <span class="text-[8px] font-black text-red-600 uppercase tracking-widest animate-pulse">Painel VRZ Ativo</span>
+                                <button onclick="location.reload()" class="text-[8px] font-black text-white bg-red-600/20 hover:bg-red-600 px-2 py-1 rounded transition-all uppercase border border-red-600/30">Sair</button>
                             </div>
                         </div>
                         
+                        <div id="adminStats" class="hidden px-2 mb-4 space-y-4">
+                            <div class="glass p-4 rounded-2xl flex items-center gap-6">
+                                <div class="w-24 h-24"><canvas id="statsChart"></canvas></div>
+                                <div class="flex flex-col gap-1">
+                                    <h4 class="text-[10px] font-black uppercase text-gray-500">Métricas Globais</h4>
+                                    <span class="text-[11px] font-bold">Pendentes: <span id="countPending" class="text-red-500">0</span></span>
+                                    <span class="text-[11px] font-bold">Concluídos: <span id="countAnswered" class="text-green-500">0</span></span>
+                                    <button id="btnExportPDF" class="mt-2 bg-white/10 hover:bg-red-600 px-3 py-1 rounded-full text-[9px] font-black uppercase transition-all">Exportar PDF</button>
+                                </div>
+                            </div>
+                        </div>
+
                         <div id="protocolSearchContainer" class="px-2">
                             <div class="relative">
                                 <input type="text" id="protocolInput" class="input-field !py-3 !text-[11px] uppercase pr-20" placeholder="Acompanhar Protocolo (Ex: VRZ-XXXX)">
@@ -161,43 +142,9 @@
                             </div>
                         </div>
 
-                        <!-- ADMIN STATS -->
-                        <div id="adminStats" class="hidden px-2 mb-4 space-y-4">
-                            <div class="glass p-4 rounded-2xl flex flex-col md:flex-row items-center gap-6">
-                                <div class="w-24 h-24">
-                                    <canvas id="statsChart"></canvas>
-                                </div>
-                                <div class="flex flex-col gap-2">
-                                    <h4 class="text-[10px] font-black uppercase text-gray-500 tracking-widest">Métricas Globais</h4>
-                                    <div class="flex items-center gap-2">
-                                        <div class="w-2 h-2 rounded-full bg-red-600"></div>
-                                        <span class="text-[11px] font-bold uppercase">Pendentes: <span id="countPending" class="text-white">0</span></span>
-                                    </div>
-                                    <div class="flex items-center gap-2">
-                                        <div class="w-2 h-2 rounded-full bg-green-600"></div>
-                                        <span class="text-[11px] font-bold uppercase">Respondidos: <span id="countAnswered" class="text-white">0</span></span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="glass p-4 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-4">
-                                <div class="flex flex-col gap-1">
-                                    <h4 class="text-[10px] font-black uppercase text-gray-500 tracking-widest">Exportar Relatório</h4>
-                                    <p class="text-[9px] text-gray-400 italic">Gere um PDF detalhado das ideias mensais.</p>
-                                </div>
-                                <div class="flex items-center gap-2 w-full md:w-auto">
-                                    <input type="month" id="exportMonth" class="bg-black border border-white/10 rounded-lg px-3 py-2 text-[10px] uppercase font-bold outline-none text-white">
-                                    <button id="btnExportPDF" class="bg-white/10 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-[9px] font-black uppercase transition-all whitespace-nowrap">Exportar PDF</button>
-                                </div>
-                            </div>
-                        </div>
-
                         <div id="suggestionsList" class="space-y-6 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
-                            <div class="text-center py-20 opacity-30 italic flex flex-col items-center gap-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                                </svg>
-                                <span class="text-xs uppercase font-bold tracking-[0.2em]">Insira um protocolo para pesquisar sua ideia.</span>
+                            <div class="text-center py-20 opacity-30 italic flex flex-col items-center gap-4 text-xs uppercase font-bold tracking-widest">
+                                Insira um protocolo para pesquisar sua ideia.
                             </div>
                         </div>
                     </div>
@@ -205,7 +152,7 @@
             </div>
         </section>
 
-        <!-- PAGE: ABOUT -->
+        <!-- PÁGINA: SOMOS VRZ (RESTAURADA) -->
         <section id="page-about" class="page-content space-y-12">
             <div class="text-center space-y-4">
                 <h1 class="text-4xl md:text-7xl font-black italic uppercase leading-none">Somos <span class="text-red-600">VRZ</span></h1>
@@ -278,16 +225,11 @@
         </section>
     </main>
 
-    <footer class="p-8 border-t border-gray-900 text-center">
-        <a href="https://www.vrzblindados.com.br/" target="_blank" class="text-gray-800 text-[8px] uppercase tracking-[0.6em] font-black hover:text-red-600 transition-colors">www.vrzblindados.com.br</a>
-    </footer>
-
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 
-        // Configurações extraídas das suas chaves do Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyDSvjmRtKMnipJUdwF6gdFhSoGo2gBBJJc",
             authDomain: "portal-vrz.firebaseapp.com",
@@ -299,39 +241,42 @@
         };
 
         const appId = "portal-vrz";
-        let auth, db, user = null, isAdmin = false, currentSearchProtocol = "", allDocsCache = [], statsChart = null;
+        let auth, db, user = null, isAdmin = false, currentSearchProtocol = "", statsChart = null, allDocsCache = [];
+
+        const showModal = (title, text, confirmCallback = null) => {
+            const modal = document.getElementById('custom-modal');
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-text').innerHTML = text;
+            const actions = document.getElementById('modal-actions');
+            actions.innerHTML = '';
+            const closeBtn = document.createElement('button');
+            closeBtn.className = "bg-gray-800 px-6 py-2 rounded-lg text-xs font-bold uppercase hover:bg-gray-700 transition-all";
+            closeBtn.innerText = confirmCallback ? "Cancelar" : "Fechar";
+            closeBtn.onclick = () => modal.style.display = 'none';
+            actions.appendChild(closeBtn);
+            if (confirmCallback) {
+                const confirmBtn = document.createElement('button');
+                confirmBtn.className = "bg-red-600 px-6 py-2 rounded-lg text-xs font-bold uppercase hover:bg-red-700 transition-all";
+                confirmBtn.innerText = "Confirmar";
+                confirmBtn.onclick = () => { confirmCallback(); modal.style.display = 'none'; };
+                actions.appendChild(confirmBtn);
+            }
+            modal.style.display = 'flex';
+        };
 
         const updateStatusUI = (text, isError = false) => {
             const statusEl = document.getElementById('userIdDisplay');
             if (statusEl) {
                 statusEl.innerText = text;
-                statusEl.className = isError ? "text-red-600 italic uppercase underline" : "text-green-500 italic uppercase";
+                statusEl.className = isError ? "text-red-600 italic underline text-[8px]" : "text-green-500 italic";
             }
         };
 
         const init = async () => {
             try {
-                // Tenta carregar config do ambiente (fallback para hardcoded se falhar)
-                const finalConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : firebaseConfig;
-                
-                const app = initializeApp(finalConfig);
+                const app = initializeApp(firebaseConfig);
                 auth = getAuth(app);
                 db = getFirestore(app);
-
-                // Autenticação (segue RULE 3)
-                const performAuth = async () => {
-                    try {
-                        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                            await signInWithCustomToken(auth, __initial_auth_token);
-                        } else {
-                            await signInAnonymously(auth);
-                        }
-                    } catch (e) {
-                        updateStatusUI(`ERRO AUTH: ATIVE LOGIN ANÓNIMO`, true);
-                    }
-                };
-
-                await performAuth();
 
                 onAuthStateChanged(auth, (u) => {
                     user = u;
@@ -339,24 +284,18 @@
                         updateStatusUI("CONECTADO");
                         setupSuggestionsListener();
                     } else {
-                        updateStatusUI("DESCONECTADO", true);
+                        signInAnonymously(auth).catch(e => {
+                            let domain = window.location.hostname || "local";
+                            updateStatusUI(`ERRO: Adicione o domínio "${domain}" no Firebase (${e.code})`, true);
+                        });
                     }
                 });
-
-                const now = new Date();
-                const month = String(now.getMonth() + 1).padStart(2, '0');
-                const monthEl = document.getElementById('exportMonth');
-                if (monthEl) monthEl.value = `${now.getFullYear()}-${month}`;
-
             } catch (e) {
-                updateStatusUI(`ERRO SISTEMA`, true);
+                updateStatusUI("ERRO SISTEMA", true);
             } finally {
                 setTimeout(() => {
-                    const loader = document.getElementById('loader');
-                    if(loader) {
-                        loader.style.opacity = '0';
-                        setTimeout(() => loader.remove(), 500);
-                    }
+                    const l = document.getElementById('loader');
+                    if(l) { l.style.opacity = '0'; setTimeout(() => l.remove(), 500); }
                 }, 1000);
             }
         };
@@ -365,7 +304,6 @@
 
         const setupSuggestionsListener = () => {
             if (!user || !db) return;
-            // RULE 1: artifacts/{appId}/public/data/{collectionName}
             const suggestionsRef = collection(db, 'artifacts', appId, 'public', 'data', 'suggestions');
             onSnapshot(suggestionsRef, (snap) => {
                 allDocsCache = snap.docs.map(d => ({id: d.id, ...d.data()}))
@@ -373,7 +311,7 @@
                 renderSuggestions();
                 if (isAdmin) updateDashboard();
             }, (error) => {
-                updateStatusUI(`ERRO REGRAS`, true);
+                updateStatusUI("ERRO REGRAS: Verifique o Firestore", true);
             });
         };
 
@@ -381,49 +319,39 @@
             const list = document.getElementById('suggestionsList');
             if(!list) return;
             list.innerHTML = '';
-            
-            let docsToShow = allDocsCache.filter(data => {
-                if (isAdmin) return true;
-                return currentSearchProtocol && data.protocol === currentSearchProtocol;
-            });
+            let docsToShow = allDocsCache.filter(data => isAdmin || (currentSearchProtocol && data.protocol === currentSearchProtocol));
             
             if(docsToShow.length === 0) {
-                const emptyMsg = currentSearchProtocol ? "Protocolo não encontrado." : "Aguardando protocolo...";
-                list.innerHTML = `<div class="text-center py-20 opacity-20 italic text-xs uppercase font-bold tracking-widest">${emptyMsg}</div>`;
+                list.innerHTML = `<div class="text-center py-20 opacity-20 italic text-xs font-bold tracking-widest">${currentSearchProtocol ? 'Protocolo não encontrado.' : 'Aguardando termo...'}</div>`;
                 return;
             }
 
             docsToShow.forEach(data => {
                 const div = document.createElement('div');
                 div.className = 'glass p-5 rounded-2xl suggestion-card space-y-3 mb-4 border border-white/5 transition-all hover:border-red-600/20';
-                
                 const adminTools = isAdmin ? `
                     <div class="flex gap-4 mt-3 pt-3 border-t border-white/5">
                         <button class="btn-reply text-[8px] text-blue-500 font-black uppercase">Responder</button>
                         <button class="btn-delete text-[8px] text-red-600 font-black uppercase">Eliminar</button>
                     </div>` : '';
-
                 div.innerHTML = `
-                    <div class="flex justify-between items-start mb-2">
+                    <div class="flex justify-between items-start">
                         <div class="flex flex-col">
                             <span class="text-red-500 font-black uppercase text-[10px] tracking-widest">${data.name || 'Anônimo'}</span>
                             <span class="text-[7px] text-gray-500 font-mono mt-0.5">${data.protocol || '---'}</span>
                         </div>
                         <span class="text-[7px] text-gray-600 font-bold uppercase">${data.sector || ''} ${data.prodLine ? '• ' + data.prodLine : ''}</span>
                     </div>
-                    <p class="text-gray-300 italic text-[11px] leading-relaxed">"${data.text || ''}"</p>
-                    ${data.adminReply ? `<div class='reply-box'><span class='text-[7px] font-black uppercase text-red-600 block mb-1'>Resposta Administração</span><p class='text-[10px] italic'>${data.adminReply}</p></div>` : ''}
+                    <p class="text-gray-300 italic text-[11px] font-light leading-relaxed">"${data.text || ''}"</p>
+                    ${data.adminReply ? `<div class='reply-box'><span class='text-[7px] font-black text-red-600 uppercase block mb-1'>Resposta VRZ</span><p class='text-[10px] text-gray-300'>${data.adminReply}</p></div>` : ''}
                     ${adminTools}
                 `;
-
                 if(isAdmin) {
-                    div.querySelector('.btn-delete').onclick = () => {
-                        showModal("Eliminar", "Deseja apagar esta proposta?", async () => {
-                            await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'suggestions', data.id));
-                        });
-                    };
+                    div.querySelector('.btn-delete').onclick = () => showModal("Apagar", "Deseja eliminar esta proposta?", async () => {
+                        await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'suggestions', data.id));
+                    });
                     div.querySelector('.btn-reply').onclick = () => {
-                        const r = prompt("Resposta VRZ:", data.adminReply || "");
+                        const r = prompt("Resposta oficial VRZ:", data.adminReply || "");
                         if(r !== null) updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'suggestions', data.id), { adminReply: r });
                     };
                 }
@@ -436,55 +364,45 @@
             const solved = allDocsCache.filter(d => d.adminReply).length;
             document.getElementById('countPending').innerText = pending;
             document.getElementById('countAnswered').innerText = solved;
-
             const ctx = document.getElementById('statsChart').getContext('2d');
             if (statsChart) statsChart.destroy();
             statsChart = new Chart(ctx, {
                 type: 'doughnut',
-                data: {
-                    datasets: [{ data: [pending, solved], backgroundColor: ['#dc2626', '#16a34a'], borderWidth: 0 }]
-                },
+                data: { datasets: [{ data: [pending, solved], backgroundColor: ['#dc2626', '#16a34a'], borderWidth: 0 }] },
                 options: { cutout: '70%', plugins: { legend: { display: false } } }
             });
         };
 
         document.getElementById('feedbackForm').onsubmit = async (e) => {
             e.preventDefault();
-            if (!user) return alert("Erro de ligação.");
-            
+            if (!auth.currentUser) { updateStatusUI("RECONECTANDO...", true); await signInAnonymously(auth); }
             const btn = document.getElementById('submitBtn');
             const protocol = 'VRZ-' + Math.random().toString(36).substring(2, 8).toUpperCase();
-            const isAnon = document.getElementById('isAnonymous').checked;
-
             const data = {
-                name: isAnon ? 'Anônimo' : document.getElementById('userName').value.trim(),
-                sector: isAnon ? 'Anônimo' : (document.getElementById('userSector').value.trim() || 'Não Informado'),
-                prodLine: isAnon ? 'Anônimo' : (document.getElementById('userProdLine').value.trim() || 'Geral'),
-                text: document.getElementById('userText').value.trim(),
+                name: document.getElementById('isAnonymous').checked ? 'Anônimo' : document.getElementById('userName').value,
+                sector: document.getElementById('isAnonymous').checked ? 'Anônimo' : (document.getElementById('userSector').value || 'Não Informado'),
+                prodLine: document.getElementById('isAnonymous').checked ? 'Anônimo' : (document.getElementById('userProdLine').value || 'Geral'),
+                text: document.getElementById('userText').value,
                 protocol: protocol,
                 timestamp: serverTimestamp()
             };
-
             btn.disabled = true; btn.innerText = "A ENVIAR...";
             try {
                 await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'suggestions'), data);
-                showModal("Sucesso", `Ideia registada!<br>Código de acompanhamento:<br><span class='text-red-600 text-2xl font-black underline'>${protocol}</span>`);
+                showModal("Sucesso", `Ideia registada!<br>Protocolo: <span class='text-red-600 font-black'>${protocol}</span>`);
                 document.getElementById('feedbackForm').reset();
                 btn.innerText = "ENVIADO";
                 setTimeout(() => { btn.disabled = false; btn.innerText = "Enviar Proposta"; }, 3000);
             } catch (err) {
-                alert(`Erro: ${err.message}`);
+                alert(`Erro de ligação ao Firestore. Verifique as regras de segurança.`);
                 btn.disabled = false;
-                btn.innerText = "Tentar Novamente";
             }
         };
 
         document.getElementById('isAnonymous').onchange = (e) => {
-            const isAnon = e.target.checked;
-            ['nameContainer', 'sectorContainer', 'prodLineContainer'].forEach(id => {
-                document.getElementById(id).classList.toggle('hidden', isAnon);
-            });
-            document.getElementById('userName').required = !isAnon;
+            const containers = ['nameContainer', 'sectorContainer', 'prodLineContainer'];
+            containers.forEach(id => document.getElementById(id).classList.toggle('hidden', e.target.checked));
+            document.getElementById('userName').required = !e.target.checked;
         };
 
         document.getElementById('btnSearchProtocol').onclick = () => {
@@ -492,7 +410,7 @@
             renderSuggestions();
         };
 
-        window.loginAdmin = () => {
+        window.loginAdminModal = () => {
             const u = prompt("Utilizador:");
             const p = prompt("Senha:");
             if ( (u === "Lucas.Sabino" && p === "Vrz2024") || (u === "Eduardo.Rocha" && p === "Helito@1313") ) {
@@ -510,28 +428,23 @@
             const { jsPDF } = window.jspdf;
             const pdf = new jsPDF();
             pdf.text("Relatório Fábrica de Ideias VRZ", 14, 20);
-            const body = allDocsCache.map(d => [d.protocol, d.name, d.text.substring(0, 50) + "...", d.adminReply ? "Respondido" : "Pendente"]);
+            const body = allDocsCache.map(d => [d.protocol, d.name, d.text.substring(0,50), d.adminReply ? "OK" : "Pendente"]);
             pdf.autoTable({ head: [['Protocolo', 'Autor', 'Ideia', 'Status']], body: body, startY: 30 });
-            pdf.save("relatorio_vrz.pdf");
+            pdf.save("Relatorio_Ideias_VRZ.pdf");
         };
 
         window.showPage = (id) => {
             document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            
+            const mS = document.getElementById('m-nav-suggestions');
+            const mA = document.getElementById('m-nav-about');
+            if (mS) mS.className = id === 'suggestions' ? 'w-2 h-2 rounded-full bg-red-600' : 'w-2 h-2 rounded-full bg-transparent';
+            if (mA) mA.className = id === 'about' ? 'w-2 h-2 rounded-full bg-red-600' : 'w-2 h-2 rounded-full bg-transparent';
+
             document.getElementById(`page-${id}`)?.classList.add('active');
             document.getElementById(`nav-${id}`)?.classList.add('active');
-        };
-        
-        window.handleFileSelect = (input) => {
-            const display = document.getElementById('fileNameDisplay');
-            if (input.files && input.files[0]) display.innerText = input.files[0].name;
-        };
-        
-        window.removeSelectedFile = () => {
-            const input = document.getElementById('userFile');
-            if (input) input.value = "";
-            const display = document.getElementById('fileNameDisplay');
-            if (display) display.innerText = "Selecionar Arquivo";
+            window.scrollTo({top: 0, behavior: 'smooth'});
         };
     </script>
 </body>
