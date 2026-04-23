@@ -25,8 +25,8 @@
         .modal-content { background: #111; border: 1px solid #dc2626; border-radius: 20px; padding: 30px; width: 100%; max-width: 440px; text-align: center; }
         .icon-box { background: linear-gradient(135deg, #dc2626 0%, #7f1d1d 100%); width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; border-radius: 12px; margin-bottom: 20px; }
         .carousel-container { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 10px; }
-        .carousel-item { flex: 0 0 85%; scroll-snap-align: start; }
-        @media (min-width: 768px) { .carousel-item { flex: 0 0 calc(25% - 10px); } }
+        .carousel-item { flex: 0 0 72%; scroll-snap-align: start; cursor: pointer; }
+        @media (min-width: 768px) { .carousel-item { flex: 0 0 calc(23% - 10px); } }
         .mobile-nav { position: fixed; bottom: 0; left: 0; right: 0; display: flex; justify-content: space-around; padding: 15px; background: rgba(10,10,10,0.95); backdrop-filter: blur(10px); border-top: 1px solid rgba(255,255,255,0.05); z-index: 100; }
         @media (min-width: 768px) { .mobile-nav { display: none; } }
 
@@ -321,11 +321,63 @@
             <div class="glass p-8 rounded-[2.5rem] border border-white/5 overflow-hidden">
                 <h2 class="text-xl font-black uppercase italic text-white mb-6">Excelência VRZ</h2>
                 <div class="carousel-container custom-scrollbar">
-                    <div class="carousel-item rounded-2xl border border-white/10 aspect-[9/16] bg-neutral-900 flex items-center justify-center italic text-gray-700 text-[10px] font-black uppercase tracking-widest">Blindagem Nível III-A</div>
-                    <div class="carousel-item rounded-2xl border border-white/10 aspect-[9/16] bg-neutral-900 flex items-center justify-center italic text-gray-700 text-[10px] font-black uppercase tracking-widest">Vidros Balísticos</div>
-                    <div class="carousel-item rounded-2xl border border-white/10 aspect-[9/16] bg-neutral-900 flex items-center justify-center italic text-gray-700 text-[10px] font-black uppercase tracking-widest">Acabamento Premium</div>
+
+                    <!-- Vídeo 1 -->
+                    <div class="carousel-item rounded-2xl overflow-hidden border border-white/10 aspect-[9/16] bg-neutral-900 relative group">
+                        <video class="w-full h-full object-cover" loop muted playsinline
+                            poster=""
+                            onmouseenter="this.play()" onmouseleave="this.pause()"
+                            onclick="this.paused ? this.play() : this.pause()">
+                            <source src="https://vrzblindados.github.io/Fabrica-de-Ideias/video1.mp4" type="video/mp4">
+                        </video>
+
+                        <div class="absolute inset-0 flex items-center justify-center opacity-60 group-hover:opacity-0 transition-opacity pointer-events-none">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-white drop-shadow-lg" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M8 5v14l11-7z"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Vídeo 2 -->
+                    <div class="carousel-item rounded-2xl overflow-hidden border border-white/10 aspect-[9/16] bg-neutral-900 relative group">
+                        <video class="w-full h-full object-cover" loop muted playsinline
+                            onmouseenter="this.play()" onmouseleave="this.pause()"
+                            onclick="this.paused ? this.play() : this.pause()">
+                            <source src="https://vrzblindados.github.io/Fabrica-de-Ideias/video2.mp4" type="video/mp4">
+                        </video>
+
+                        <div class="absolute inset-0 flex items-center justify-center opacity-60 group-hover:opacity-0 transition-opacity pointer-events-none">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-white drop-shadow-lg" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M8 5v14l11-7z"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Vídeo 3 -->
+                    <div class="carousel-item rounded-2xl overflow-hidden border border-white/10 aspect-[9/16] bg-neutral-900 relative group">
+                        <video class="w-full h-full object-cover" loop muted playsinline
+                            onmouseenter="this.play()" onmouseleave="this.pause()"
+                            onclick="this.paused ? this.play() : this.pause()">
+                            <source src="https://vrzblindados.github.io/Fabrica-de-Ideias/video3.mp4" type="video/mp4">
+                        </video>
+
+                        <div class="absolute inset-0 flex items-center justify-center opacity-60 group-hover:opacity-0 transition-opacity pointer-events-none">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-white drop-shadow-lg" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M8 5v14l11-7z"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Imagem / foto 4 -->
+                    <div class="carousel-item rounded-2xl overflow-hidden border border-white/10 aspect-[9/16] bg-neutral-900 relative">
+                        <img src="https://vrzblindados.github.io/Fabrica-de-Ideias/video4.mp3.jpg"
+                            class="w-full h-full object-cover" alt="VRZ Blindados"
+                            onerror="this.parentElement.style.display='none'">
+
+                    </div>
+
                 </div>
-                <p class="text-center text-[8px] text-gray-600 uppercase mt-4 font-black italic tracking-widest opacity-50">Qualidade Garantida</p>
+
             </div>
         </div>
     </section>
@@ -333,7 +385,6 @@
 
 <script type="module">
 import { initializeApp }                                            from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
-import { getAuth, signInAnonymously, onAuthStateChanged }           from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
 import { getFirestore, collection, addDoc, onSnapshot,
          serverTimestamp, doc, updateDoc, deleteDoc }               from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 
@@ -348,8 +399,8 @@ const firebaseConfig = {
 };
 
 const APPID = "portal-vrz";
-let auth, db;
-window._vrz = { user: null, isAdmin: false, allDocsCache: [], adminTab: 'all' };
+let db;
+window._vrz = { isAdmin: false, allDocsCache: [], adminTab: 'all' };
 
 // ── STATUS ────────────────────────────────────────────────────────
 const setStatus = (state, label) => {
@@ -385,7 +436,7 @@ window.showModal = showModal;
 
 // ── LISTENER FIRESTORE ────────────────────────────────────────────
 const setupListener = () => {
-    if (!window._vrz.user || !db) return;
+    if (!db) return;
     const ref = collection(db, 'artifacts', APPID, 'public', 'data', 'suggestions');
     onSnapshot(ref, snap => {
         window._vrz.allDocsCache = snap.docs
@@ -543,16 +594,6 @@ window.handleSubmit = async () => {
     if (!isAnon && !nameVal) { showModal("Atenção", "Insira seu nome ou ative o modo Anónimo."); return; }
     if (!textVal)            { showModal("Atenção", "Descreva sua ideia antes de enviar."); return; }
 
-    if (!window._vrz.user) {
-        setStatus('connecting', 'Reconectando');
-        try {
-            await signInAnonymously(auth);
-            await new Promise(res => {
-                const unsub = onAuthStateChanged(auth, u => { if (u) { window._vrz.user = u; unsub(); res(); } });
-            });
-        } catch (e) { showModal("Erro de Conexão", e.message); return; }
-    }
-
     const btn      = document.getElementById('submitBtn');
     const protocol = 'VRZ-' + Math.random().toString(36).substring(2,8).toUpperCase();
     btn.disabled   = true;
@@ -646,7 +687,7 @@ window.doLogin = () => {
 
     // Pequeno delay para feedback visual
     setTimeout(() => {
-        if ((u === "Lucas.Sabino" && p === "Vrz2024") ||
+        if ((u === "Lucas.Sabino" && p === "29623298") ||
             (u === "Eduardo.Rocha" && p === "Helito@1313")) {
             window._vrz.isAdmin = true;
             document.getElementById('login-modal').style.display = 'none';
@@ -675,30 +716,11 @@ window.doLogin = () => {
 // ── INIT ──────────────────────────────────────────────────────────
 const init = async () => {
     try {
+        setStatus('connecting', 'Conectando');
         const app = initializeApp(firebaseConfig);
-        auth = getAuth(app);
-        db   = getFirestore(app);
-
-        onAuthStateChanged(auth, async u => {
-            if (u) {
-                window._vrz.user = u;
-                setStatus('connected', 'Conectado');
-                setupListener();
-            } else {
-                setStatus('connecting', 'Conectando');
-                try {
-                    await signInAnonymously(auth);
-                } catch (e) {
-                    if (e.code === "auth/unauthorized-domain") {
-                        setStatus('error', 'Domínio não autorizado');
-                        console.error(`[VRZ] Adicione "${location.hostname}" nos domínios do Firebase Auth.`);
-                    } else {
-                        setStatus('error', 'Erro de Auth');
-                        console.error("[VRZ]", e);
-                    }
-                }
-            }
-        });
+        db = getFirestore(app);
+        setStatus('connected', 'Conectado');
+        setupListener();
     } catch (e) {
         setStatus('error', 'Erro de Sistema');
         console.error("[VRZ]", e);
